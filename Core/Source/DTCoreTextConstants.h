@@ -5,8 +5,9 @@
 #define UNICODE_OBJECT_PLACEHOLDER @"\ufffc"
 #define UNICODE_LINE_FEED @"\u2028"
 
-// unicode spaces used in CharacterSet.ignorableWhitespaceCharacterSet
+// unicode spaces (see http://www.cs.tut.fi/~jkorpela/chars/spaces.html)
 
+#define UNICODE_SPACE @"\u0020"
 #define UNICODE_NON_BREAKING_SPACE @"\u00a0"
 #define UNICODE_OGHAM_SPACE_MARK @"\u1680"
 #define UNICODE_MONGOLIAN_VOWEL_SEPARATOR @"\u180e"
