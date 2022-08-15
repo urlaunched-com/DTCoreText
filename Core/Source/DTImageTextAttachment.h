@@ -11,6 +11,13 @@
 
 @class DTImage;
 
+@interface UIImage (scale)
+
+- (UIImage *)scaleImageToSize:(CGSize)newSize;
+
+@end
+
+
 /**
  A specialized subclass in the DTTextAttachment class cluster to represent an embedded image
  */
