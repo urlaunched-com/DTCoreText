@@ -443,7 +443,7 @@ NSDictionary *_classesForNames = nil;
 		NSDictionary *attributes = [self attributesForAttributedStringRepresentation];
 		
 		NSMutableAttributedString *tmpString;
-		
+
 		if (_textAttachment)
 		{
 			// ignore text, use unicode object placeholder
@@ -453,7 +453,15 @@ NSDictionary *_classesForNames = nil;
 		{
 			// walk through children
 			tmpString = [[NSMutableAttributedString alloc] init];
-			
+
+            //For the case when an empty `a` tag is used as a fragment reference <a id="" \>
+            if ([attributes valueForKey: DTAnchorAttribute] != nil && self.childNodes == nil) {
+                [tmpString appendString:@"\t    "];
+                [tmpString addAttributes:attributes range:NSMakeRange(0, 1)];
+                [tmpString removeAttribute:NSUnderlineStyleAttributeName range:NSMakeRange(0, 1)];
+                [tmpString removeAttribute:NSForegroundColorAttributeName range:NSMakeRange(0, 1)];
+            }
+
 			DTHTMLElement *previousChild = nil;
 			
 			for (DTHTMLElement *oneChild in self.childNodes)

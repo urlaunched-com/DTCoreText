@@ -22,6 +22,8 @@
 
 static NSCache *imageCache = nil;
 
+#if TARGET_OS_IPHONE
+
 @implementation UIImage (scale)
 
 /**
@@ -56,6 +58,8 @@ static NSCache *imageCache = nil;
 }
 
 @end
+
+#endif
 
 @interface DTImageTextAttachment () // private stuff
 
@@ -377,6 +381,7 @@ static NSCache *imageCache = nil;
 
 - (void)drawInRect:(CGRect)rect context:(CGContextRef)context
 {
+#if TARGET_OS_IPHONE
     if (self.image.size.width > rect.size.width || self.image.size.height > rect.size.height) {
         UIImage *scaledImage = [self.image scaleImageToSize:rect.size];
         [scaledImage drawInRect:rect];
@@ -384,6 +389,9 @@ static NSCache *imageCache = nil;
     } else {
         [self.image drawInRect:rect];
     }
+#else
+    [self.image drawInRect:rect];
+#endif
 }
 
 #pragma mark - DTTextAttachmentHTMLEncoding

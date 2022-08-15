@@ -9,6 +9,8 @@
 #import "DTCompatibility.h"
 #import "DTTextAttachment.h"
 
+#if TARGET_OS_IOS
+
 @class DTImage;
 
 @interface UIImage (scale)
@@ -16,6 +18,8 @@
 - (UIImage *)scaleImageToSize:(CGSize)newSize;
 
 @end
+
+#endif
 
 
 /**

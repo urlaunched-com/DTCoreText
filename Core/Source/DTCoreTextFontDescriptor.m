@@ -32,18 +32,18 @@ static BOOL _needsChineseFontCascadeFix = NO;
 {
 	NSString *_fontFamily;
 	NSString *_fontName;
-
+	
 	CGFloat _pointSize;
 	
 	CTFontSymbolicTraits _stylisticTraits;
 	CTFontStylisticClass _stylisticClass;
 	
 	BOOL _smallCapsFeature;
-	
-	// internal values for size class and usage category, i.e.dynamic type
-	
-	long _sizeCategory;
-	NSString *_usageAttribute;
+
+    // internal values for size class and usage category, i.e.dynamic type
+
+    long _sizeCategory;
+    NSString *_usageAttribute;
 }
 
 + (void)initialize
@@ -269,7 +269,7 @@ static BOOL _needsChineseFontCascadeFix = NO;
 		NSDictionary *dictionary = (__bridge NSDictionary *)dict;
 		_sizeCategory = [[dictionary objectForKey:@"NSCTFontSizeCategoryAttribute"] longValue];
 		_usageAttribute = [dictionary objectForKey:@"NSCTFontUIUsageAttribute"];
-		
+
 		CFDictionaryRef traitsDict = CTFontDescriptorCopyAttribute(ctFontDescriptor, kCTFontTraitsAttribute);
 		CTFontSymbolicTraits traitsValue = [[(__bridge NSDictionary *)traitsDict objectForKey:(id)kCTFontSymbolicTrait] unsignedIntValue];
 		CFRelease(traitsDict);
@@ -283,7 +283,7 @@ static BOOL _needsChineseFontCascadeFix = NO;
 		CFStringRef familyName = CTFontDescriptorCopyAttribute(ctFontDescriptor, kCTFontFamilyNameAttribute);
 		self.fontFamily = CFBridgingRelease(familyName);
 	}
-
+	
 	return self;
 }
 
@@ -442,13 +442,13 @@ static BOOL _needsChineseFontCascadeFix = NO;
 		
 		[tmpDict setObject:featureSettings forKey:(id)kCTFontFeatureSettingsAttribute];
 	}
-	
+
 	if (_sizeCategory)
 	{
 		NSNumber *num = [NSNumber numberWithLong:_sizeCategory];
 		[tmpDict setObject:num forKey:@"NSCTFontSizeCategoryAttribute"];
 	}
-	
+
 	if (_usageAttribute)
 	{
 		[tmpDict setObject:_usageAttribute forKey:@"NSCTFontUIUsageAttribute"];
@@ -854,6 +854,7 @@ static BOOL _needsChineseFontCascadeFix = NO;
 {
 	DTCoreTextFontDescriptor *newDesc = [[DTCoreTextFontDescriptor allocWithZone:zone] initWithFontAttributes:[self fontAttributes]];
 	newDesc.pointSize = self.pointSize;
+	
 	return newDesc;
 }
 

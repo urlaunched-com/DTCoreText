@@ -205,7 +205,7 @@
 	CGFloat defaultFontSize = 12.0f;
 
 	CTFontDescriptorRef defaultFontDescriptor = (__bridge CTFontDescriptorRef)[_options objectForKey:DTDefaultFontDescriptor];
-	
+
 	if (defaultFontDescriptor)
 	{
 		_defaultFontDescriptor = [[DTCoreTextFontDescriptor alloc] initWithCTFontDescriptor:defaultFontDescriptor];
@@ -213,18 +213,18 @@
 	else
 	{
 		_defaultFontDescriptor = [[DTCoreTextFontDescriptor alloc] initWithFontAttributes:nil];
-		
+
 		NSNumber *defaultFontSizeNumber = [_options objectForKey:DTDefaultFontSize];
-		
+
 		if (defaultFontSizeNumber)
 		{
 			defaultFontSize = [defaultFontSizeNumber floatValue];
 		}
-		
+
 		_defaultFontDescriptor.pointSize = defaultFontSize * _textScale;
-		
+
 		NSString *defaultFontFamily = [_options objectForKey:DTDefaultFontFamily];
-		
+
 		if (defaultFontFamily)
 		{
 			_defaultFontDescriptor.fontFamily = defaultFontFamily;
@@ -240,7 +240,7 @@
 			_defaultFontDescriptor.fontName = defaultFontName;
 		}
 	}
-	
+
 	_defaultLinkColor = [_options objectForKey:DTDefaultLinkColor];
 	
 	if (_defaultLinkColor)
@@ -422,7 +422,16 @@
 		// remove line breaks and whitespace in links
 		NSString *cleanString = [[self->_currentTag attributeForKey:@"href"] stringByReplacingOccurrencesOfString:@"\n" withString:@""];
 		cleanString = [cleanString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-		
+
+        //For the case when an empty `a` tag is used as a fragment reference <a id="" \>
+        if ([self->_currentTag attributes].count == 1 && [self->_currentTag attributeForKey:@"id"] != nil) {
+            NSMutableDictionary *mutableAttributes = [[self->_currentTag attributes] mutableCopy];
+            [mutableAttributes setValue:[self->_currentTag attributeForKey:@"id"] forKey:DTAnchorAttribute];
+            [self->_currentTag setAttributes:mutableAttributes];
+            self->_currentTag.anchorName = [self->_currentTag attributeForKey:@"id"];
+            return;
+        }
+
 		if (![cleanString length])
 		{
 			// no valid href
